@@ -1,0 +1,16 @@
+name: PR Approval Notification
+on:
+  pull_request:
+    types: [opened]
+jobs:
+  notify-slack:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Slack Notification
+        run: |
+          curl -X POST \
+          -H "Content-Type: application/json" \
+          --data '{
+            "text":"✅ Pull Request Opened!\n\nRepository: ${{ github.repository }}\nPR: #${{ github.event.pull_request.number }}\nOpened by: ${{ github.actor }}"
+          }' \
+          ${{ secrets.SLACK_WEBHOOK_URL }}
